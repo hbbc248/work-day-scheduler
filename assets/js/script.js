@@ -1,5 +1,41 @@
+var tasks = {};
+
+// load task function
+var loadTasks = function() {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+
+    // if nothing in localStorage, create object for hours tasks
+    if (!tasks) {
+        tasks = {
+            task1: "",
+            task2: "",
+            task3: "",
+            task4: "",
+            task5: "",
+            task6: "",
+            task7: "",
+            task8: "",
+            task9: ""
+        };
+        return
+    }
+    // load tasks into each span element
+    for (i = 1; i < 10; i++) {
+    var taskId = "task" + i;
+    console.log(tasks[taskId]);
+    $("#"+taskId)
+    .children(".col-8")
+    .children(".mt-2").text(tasks[taskId]);
+    }
+
+
+};
+// save tasks function
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
 // when user click on the task to change
-$("#task").on("click", "span", function(){
+$(".col-8").on("click", "span", function(){
     var text = $(this)
         .text()
         .trim();
@@ -10,13 +46,11 @@ $("#task").on("click", "span", function(){
     $(this).replaceWith(textInput);
 });
 // when user click in other part of the page
-$("#task").on("blur", "textarea", function(){
+$(".col-8").on("blur", "textarea", function(){
     // get the textarea"s current value/text
     var text = $(this)
         .val()
         .trim();
-    
-    // saving part for arrays
 
     //recreate span element
     var taskSpan = $("<span>")
@@ -26,5 +60,34 @@ $("#task").on("blur", "textarea", function(){
     $(this).replaceWith(taskSpan);
 });
 
+// when a saving button is clicked
+$(".saveBtn").on("click", function(){
+    var taskId = $(this)
+        .closest(".row")
+        .attr("id");
+    var text = $(this)
+        .closest(".row")
+        .children(".col-8")
+        .children(".mt-2")
+        .text();
+    tasks[taskId] = text;
+    saveTasks();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var date = moment().format('dddd, MMMM Do');
 $("#today").text(date);
+
+loadTasks();
