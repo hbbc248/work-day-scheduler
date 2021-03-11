@@ -78,8 +78,37 @@ $(".saveBtn").on("click", function(){
     saveTasks();
 });
 
+var auditTask = function() {
+    for (i = 1; i < 10; i++) {
+        // convert to moment object at 9:00am and 10:00am
+        var time1 = moment().set("hour", (8+i)).set("minute", 0).set("second", 0).set("millisecond", 0);
+        var time2 = moment().set("hour", (9+i)).set("minute", 0).set("second", 0).set("millisecond", 0);
 
+        // remove any old classes
+        $("#task"+i)
+            .children(".col-8")
+            .removeClass("past present future");
+            
+        // apply new class if task is in the future
+        if (moment().isBefore(time1)) {
+            $("#task"+i)
+            .children(".col-8")
+            .addClass("future");
+        }
+        if (moment().isBetween(time1, time2)) {
+            $("#task"+i)
+            .children(".col-8")
+            .addClass("present");
+        }
+        if (moment().isAfter(time2)) {
+            $("#task"+i)
+            .children(".col-8")
+            .addClass("past");
+        }
+    }
 
+};
+auditTask();
 
 
 
