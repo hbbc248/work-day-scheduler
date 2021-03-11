@@ -39,7 +39,7 @@ $(".col-8").on("click", "span", function(){
         .text()
         .trim();
     var textInput = $("<textarea>")
-        .addClass("form-control future")
+        .addClass("form-control")
         .val(text);
     textInput.trigger("focus");
     $(this).replaceWith(textInput);
@@ -79,6 +79,8 @@ $(".saveBtn").on("click", function(){
 });
 
 var auditTask = function() {
+    var date = moment().format('dddd, MMMM Do');
+    $("#today").text(date);
     for (i = 1; i < 10; i++) {
         // convert to moment object at 9:00am and 10:00am
         var time1 = moment().set("hour", (8+i)).set("minute", 0).set("second", 0).set("millisecond", 0);
@@ -88,7 +90,7 @@ var auditTask = function() {
         $("#task"+i)
             .children(".col-8")
             .removeClass("past present future");
-            
+
         // apply new class if task is in the future
         if (moment().isBefore(time1)) {
             $("#task"+i)
@@ -106,21 +108,11 @@ var auditTask = function() {
             .addClass("past");
         }
     }
-
+return false
 };
-auditTask();
-
-
-
-
-
-
-
-
-
-
-
-var date = moment().format('dddd, MMMM Do');
-$("#today").text(date);
-
+// Run audit and print new date on page every 10 seconds 
+setInterval(function () {
+    auditTask();
+  }, 10000);
 loadTasks();
+auditTask();
