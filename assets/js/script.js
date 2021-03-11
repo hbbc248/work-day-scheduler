@@ -22,13 +22,12 @@ var loadTasks = function() {
     // load tasks into each span element
     for (i = 1; i < 10; i++) {
     var taskId = "task" + i;
-    console.log(tasks[taskId]);
+    if (tasks[taskId]) {
     $("#"+taskId)
     .children(".col-8")
     .children(".mt-2").text(tasks[taskId]);
     }
-
-
+    }
 };
 // save tasks function
 var saveTasks = function() {
@@ -51,11 +50,16 @@ $(".col-8").on("blur", "textarea", function(){
     var text = $(this)
         .val()
         .trim();
+    // if empty print "Click here to enter task"
+    if (!text) {
+        text = "Click here to enter task";
+    }
 
     //recreate span element
     var taskSpan = $("<span>")
         .addClass("mt-2")
         .text(text);
+    
     //replace text area with text element
     $(this).replaceWith(taskSpan);
 });
